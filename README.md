@@ -8,4 +8,5 @@ Web frontend of the cycle planner is accessible at:
 http://transport.felk.cvut.cz/cycleplanner/
 
 http://transport.felk.cvut.cz/cykloplanovac/ (in Czech)
+
 ============

@@ -1,0 +1,2 @@
+Query,OriginID,DestinationID,Iterations of algorithm,Size of the pareto set,Running time[ms]
+0,29403198,26395516,3084998,57,102828

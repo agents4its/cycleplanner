@@ -1,0 +1,44 @@
+## java specific
+*.class
+target/**
+target/**/*
+target/
+bin/**
+tmp/**
+tmp/**/*
+contrib/
+contrib
+*/contrib/*
+bin/
+
+## eclipse 
+.settings/**
+*.prefs
+*.classpath
+*.project
+*.metadata
+
+## generic files to ignore
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+*.kml
+*.log
+*.ser
+*.war
+*.versionsBackup
+
+## big files
+*.javaobject
+*.osm
+
+## Test results
+search_test_travel_time.csv
+*/results/*
+*/jars*/*
+*.json
+*.html
+!*template.html
+

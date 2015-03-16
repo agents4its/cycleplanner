@@ -1,0 +1,115 @@
+
+<html>
+<head>
+    <title>{{title}}</title>
+    <script src="http://openlayers.org/api/OpenLayers.js"></script>
+
+    <!-- Loads map and path from JSON file -->
+    <script>
+        var map, layer;
+        var epsg4326 = new OpenLayers.Projection("EPSG:4326");
+
+        function init() {
+            map = new OpenLayers.Map({
+                div: "map",
+                projection: new OpenLayers.Projection("EPSG:900913"),
+                units: "degrees",
+                maxResolution: "auto"
+                //maxExtent: new OpenLayers.Bounds(
+                //        14.323425, 50.020094, 14.567871, 50.146546
+                //        ).transform(epsg4326, mapProjection),
+                //restrictedExtent: new OpenLayers.Bounds(
+                //        14.323425, 50.020094, 14.567871, 50.146546
+                //        ).transform(epsg4326, mapProjection)
+            });
+
+            // adds layers to map, layers are defined in common.js
+            // the first layer is the layer that is displayed when page is loaded
+            // Use OpenStreetMap
+            map.addLayer(new OpenLayers.Layer.OSM());
+
+            layer = new OpenLayers.Layer.Vector("journeyPlans", {
+                rendererOptions: { zIndexing: true }
+            });
+            map.addLayer(layer);
+
+            var fileName = {{json}};
+            OpenLayers.Request.GET({
+                url: fileName,
+                callback: drawPath
+            });
+        }
+
+
+        function drawPath(e) {
+            var response = JSON.parse(e.responseText);
+			console.log(response);
+
+            var pointList = [];
+            var maxLon, maxLat;
+            maxLon = maxLat = Number.MIN_VALUE;
+            var minLon, minLat;
+            minLon = minLat = Number.MAX_VALUE;
+
+            for(var i in response.coordinates) {
+
+                maxLon = Math.max(maxLon, response.coordinates[i].lonE6/1E6);
+                maxLat = Math.max(maxLat, response.coordinates[i].latE6/1E6);
+
+                minLon = Math.min(minLon, response.coordinates[i].lonE6/1E6);
+                minLat = Math.min(minLat, response.coordinates[i].latE6/1E6);
+
+                pointList.push(new OpenLayers.Geometry.Point(response.coordinates[i].lonE6/1E6,
+                        response.coordinates[i].latE6/1E6).transform(epsg4326, map.getProjectionObject()));
+            }
+
+            layer.addFeatures(new OpenLayers.Feature.Vector(
+                    new OpenLayers.Geometry.LineString(pointList),
+                    null,
+                    {
+                        strokeColor: "#000000",
+//                        strokeOpacity: 0.3,
+                        strokeWidth: 8
+                    }
+            ));
+
+            // Origin
+            layer.addFeatures(new OpenLayers.Feature.Vector(
+                    new OpenLayers.Geometry.Point(response.coordinates[0].lonE6/1E6,
+                            response.coordinates[0].latE6/1E6).transform(epsg4326, map.getProjectionObject()),
+                    null,
+                    {
+                        fillColor: "#0000FF",
+                        pointRadius: 8,
+                        strokeWidth: 0
+                    }
+            ));
+
+            var lastCoordinate = response.coordinates.length - 1;
+
+            // Destination
+            layer.addFeatures(new OpenLayers.Feature.Vector(
+                    new OpenLayers.Geometry.Point(response.coordinates[lastCoordinate].lonE6/1E6,
+                            response.coordinates[lastCoordinate].latE6/1E6).transform(epsg4326, map.getProjectionObject()),
+                    null,
+                    {
+                        fillColor: "#FF0000",
+                        pointRadius: 8,
+                        strokeWidth: 0
+                    }
+            ));
+
+            var avgLon = (maxLon+minLon)/2;
+            var avgLat = (maxLat+minLat)/2;
+
+            var center = new OpenLayers.LonLat(avgLon, avgLat).transform(epsg4326, map.getProjectionObject());
+            map.setCenter(center, 14);
+        }
+
+    </script>
+
+</head>
+<body onload="init();">
+    <div id="map"></div>
+</body>
+</html>

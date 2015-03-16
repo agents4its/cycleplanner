@@ -1,0 +1,5 @@
+package cz.agents.cycleplanner.routingService;
+
+public enum City {
+	PRAGUE, BRNO, PLZEN, CESKE_BUDEJOVICE, HRADEC_KRALOVE, PARDUBICE, PRAGUE_MEDIUM_A, PRAGUE_MEDIUM_B, PRAGUE_MEDIUM_C, PRAGUE_SMALL, OTHER;
+}

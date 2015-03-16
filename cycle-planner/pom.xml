@@ -1,0 +1,168 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>cycle-planner</artifactId>
+	<packaging>war</packaging>
+
+	<name>cycle-planner</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<geotools.version>8.1</geotools.version>
+	</properties>
+
+	<parent>
+		<groupId>cz.agents.cycleplanner</groupId>
+		<artifactId>cycle-planner-parent</artifactId>
+		<version>1.1.3-SNAPSHOT</version>
+	</parent>
+
+	<dependencies>
+		<!-- cycle-planner data -->
+		<dependency>
+			<groupId>cz.agents.cycleplanner</groupId>
+			<artifactId>cycleway-graphs</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>cz.agents.cycleplanner</groupId>
+			<artifactId>street-names</artifactId>
+		</dependency>
+
+		<!-- External lib -->
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-epsg-hsql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-main</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openstreetmap.osmosis</groupId>
+			<artifactId>osmosis-core</artifactId>
+		</dependency>
+		<dependency>
+			<!-- please install this dependency locally from a libosm-2.5.2-RC1-updated-osmosis.jar 
+				file provided with this project. This is a libosm library which has some 
+				classes of org.openstreetmap.osmosis updated to the version 0.43. This is 
+				done because libosm is no more being updated, but the osmosis classes inside 
+				are not capable of working with new OSM data (in the newest OSM data -as 
+				of 2013/05/20- identifiers of objects surpassed the limit of integer, so 
+				in osmosis 0.43 longs are used to solve this problem) mvn install:install-file 
+				-Dfile=lib/libosm-2.5.2-RC1-updated-osmosis.jar -DgroupId=libosm -DartifactId=libosm 
+				-Dversion=2.5.2-RC1-updated-osmosis -Dpackaging=jar -->
+			<artifactId>libosm</artifactId>
+			<groupId>libosm</groupId>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+		</dependency>
+		<dependency>
+			<!-- this dependency can be installed from atg-repo managed by agent technology 
+				center (http://agents4its.net/) -->
+			<groupId>eu.superhub.wp5</groupId>
+			<artifactId>planner-data-importer</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>hsqldb</artifactId>
+					<groupId>org.hsqldb</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-jsonSchema</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.aima-java</groupId>
+			<artifactId>aima-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.micromata.jak</groupId>
+			<artifactId>JavaAPIforKml</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-web-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>cycle-planner-1.1.3-MLC</finalName>
+		<!-- <finalName>cycle-planner-1.1.3-SNAPSHOT-NO-JUNCTION</finalName> -->
+		<!-- <finalName>cycle-planner-experiment</finalName> -->
+		<!-- <finalName>cycle-planner-graph-creator</finalName> -->
+		<!-- <finalName>cycle-planner-street-names-creator</finalName> -->
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<inherited>true</inherited>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<!-- <plugin> <artifactId>maven-assembly-plugin</artifactId> <version>2.4</version> 
+				<configuration> <descriptorRefs> <descriptorRef>jar-with-dependencies</descriptorRef> 
+				</descriptorRefs> <archive> <manifest> <mainClass>cycle.planner.RunningBicyclePlanSearch</mainClass> 
+				</manifest> </archive> </configuration> <executions> <execution> <id>make-assembly</id> 
+				<phase>package</phase> <goals> <goal>single</goal> </goals> </execution> 
+				</executions> </plugin> -->
+
+			<!-- <plugin> <artifactId>maven-assembly-plugin</artifactId> <version>2.4</version> 
+				<configuration> <descriptorRefs> <descriptorRef>jar-with-dependencies</descriptorRef> 
+				</descriptorRefs> <archive> <manifest> <mainClass>cz.agents.cycleplanner.creators.GraphCreator</mainClass> 
+				</manifest> </archive> </configuration> <executions> <execution> <id>make-assembly</id> 
+				<phase>package</phase> <goals> <goal>single</goal> </goals> </execution> 
+				</executions> </plugin> -->
+			<!-- <plugin> <artifactId>maven-assembly-plugin</artifactId> <version>2.4</version> 
+				<configuration> <descriptorRefs> <descriptorRef>jar-with-dependencies</descriptorRef> 
+				</descriptorRefs> <archive> <manifest> <mainClass>cz.agents.cycleplanner.creators.StreetNamesCreator</mainClass> 
+				</manifest> </archive> </configuration> <executions> <execution> <id>make-assembly</id> 
+				<phase>package</phase> <goals> <goal>single</goal> </goals> </execution> 
+				</executions> </plugin> -->
+		</plugins>
+	</build>
+
+</project>

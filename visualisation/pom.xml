@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>visualisation</artifactId>
+	<packaging>jar</packaging>
+
+	<name>visualisation</name>
+	<url>http://maven.apache.org</url>
+
+	<parent>
+		<groupId>cz.agents.cycleplanner</groupId>
+		<artifactId>cycle-planner-parent</artifactId>
+		<version>1.1.3-SNAPSHOT</version>
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<!-- Cycle-planner lib -->
+		<dependency>
+			<groupId>cz.agents.cycleplanner</groupId>
+			<artifactId>cycle-planner</artifactId>
+		</dependency>
+
+		<!-- External lib -->
+		<dependency>
+			<groupId>cz.agents.agentpolis.tools</groupId>
+			<artifactId>geovisio</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>hsqldb</artifactId>
+					<groupId>hsqldb</groupId>
+				</exclusion>
+				<exclusion>
+					<groupId>eu.superhub.wp5</groupId>
+					<artifactId>planner-data-importer</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<!-- this dependency can be installed from atg-repo managed by agent technology 
+				center (http://agents4its.net/) -->
+			<groupId>eu.superhub.wp5</groupId>
+			<artifactId>planner-data-importer</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>hsqldb</artifactId>
+					<groupId>org.hsqldb</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+	</dependencies>
+
+</project>

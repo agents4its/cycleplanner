@@ -1,4 +1,4 @@
-﻿    Open Bicycle Trip Planner
+    Open Bicycle Trip Planner
     Copyright 2013 Marcel Német
 
     This product includes software developed by Marcel Német

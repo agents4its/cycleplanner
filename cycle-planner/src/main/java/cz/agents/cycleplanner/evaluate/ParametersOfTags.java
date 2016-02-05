@@ -36,7 +36,7 @@ public enum ParametersOfTags {
 	private int COMFORT_MULTIPLIER_ARRAY_INDEX = 2;
 	private int QUIETNESS_MULTIPLIER_ARRAY_INDEX = 3;
 	
-	private final String PATH_TO_CSV_FILE = "/osm_tags_2014_with_parameters.csv";
+	private final String PATH_TO_CSV_FILE = "/feature_values.csv";
 	private final char SEPARATOR = ';';
 	private final char QUOTECHAR = '"';
 		
